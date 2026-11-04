@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- Small icon button on the bottom bar. MainButtonDefs are not referenced from save files. -->
+  <MainButtonDef>
+    <defName>MRA_ModRemovalAuditor</defName>
+    <label>mod audit</label>
+    <description>Check which content of selected mods remains in this save (read-only).</description>
+    <workerClass>ModRemovalAuditor.UI.MainButtonWorker_OpenModRemovalAuditor</workerClass>
+    <order>495</order>
+    <validWithoutMap>true</validWithoutMap>
+    <minimized>true</minimized>
+    <iconPath>UI/ModRemovalAuditor/MainButton</iconPath>
+    <canBeTutorDenied>true</canBeTutorDenied>
+  </MainButtonDef>
+
+</Defs>

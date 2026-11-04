@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <MRA_ModRemovalAuditor.label>MOD監査</MRA_ModRemovalAuditor.label>
+  <MRA_ModRemovalAuditor.description>選択したMODの内容がこのセーブに残っているかを調べます（読み取り専用）。</MRA_ModRemovalAuditor.description>
+</LanguageData>
