@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- General -->
+  <MRA_ModName>Mod Removal Auditor</MRA_ModName>
+  <MRA_SettingsIntro>Read-only check of the loaded save: choose enabled mods and see which of their content is still present. Nothing is changed or saved.</MRA_SettingsIntro>
+  <MRA_OpenAuditor>Open Mod Removal Auditor</MRA_OpenAuditor>
+  <MRA_NeedLoadedGame>Load a save (or start a game) to use the auditor.</MRA_NeedLoadedGame>
+  <MRA_Disclaimer>Read-only audit of the currently loaded save. "No detected instances" only covers the scopes listed under Coverage and is NOT a guarantee that a mod is safe to remove. Back up your save and test-load it after disabling a mod.</MRA_Disclaimer>
+
+  <!-- Mod list -->
+  <MRA_SelectMods>Enabled mods (Core and DLC are not listed)</MRA_SelectMods>
+  <MRA_SearchHint>Search name or package ID…</MRA_SearchHint>
+  <MRA_SelectVisible>Select shown</MRA_SelectVisible>
+  <MRA_ClearSelection>Clear</MRA_ClearSelection>
+  <MRA_SelectedCount>{0} of {1} selected</MRA_SelectedCount>
+  <MRA_Scan>Scan</MRA_Scan>
+  <MRA_Rescan>Re-scan</MRA_Rescan>
+  <MRA_Cancel>Cancel scan</MRA_Cancel>
+
+  <!-- Progress / status -->
+  <MRA_NoReportYet>Select one or more mods on the left and press Scan. The game stays paused while this window is open.</MRA_NoReportYet>
+  <MRA_Scanning>Scanning: {0} (stage {1} of {2})</MRA_Scanning>
+  <MRA_ScannedUnits>{0} units processed</MRA_ScannedUnits>
+  <MRA_ScanningHint>The scan runs in small steps each frame while the game is paused. Cancelling discards partial results.</MRA_ScanningHint>
+  <MRA_ScanCancelled>Scan cancelled. No result is shown for a cancelled scan; press Scan to run it again.</MRA_ScanCancelled>
+  <MRA_ScanFailed>Scan failed and produced no result: {0}</MRA_ScanFailed>
+  <MRA_AbortGameChanged>The loaded game changed during the scan.</MRA_AbortGameChanged>
+  <MRA_ReportTime>Scanned at {0} ({1} units).</MRA_ReportTime>
+  <MRA_CachedReport>Result of the earlier scan at {0}. The colony may have changed since; press Re-scan for current data.</MRA_CachedReport>
+
+  <!-- Summary -->
+  <MRA_SummaryHeading>Summary</MRA_SummaryHeading>
+  <MRA_Verdict_Detected>Detected: {0} instance(s) found. Investigate before removing this mod.</MRA_Verdict_Detected>
+  <MRA_Verdict_NoDetectedInstances>No detected instances within the checked scopes (not a guarantee of safe removal).</MRA_Verdict_NoDetectedInstances>
+  <MRA_Verdict_Incomplete>Incomplete: nothing was found, but some scopes were partial or failed, or content of unknown origin exists.</MRA_Verdict_Incomplete>
+  <MRA_VerdictTip_Detected>At least one thing, material or terrain from this mod is still present in a scanned scope.</MRA_VerdictTip_Detected>
+  <MRA_VerdictTip_NoDetectedInstances>Every attempted scope finished and nothing from this mod was found. Data outside the listed scopes (pawn data, quests, research, mod-specific saved data…) was not inspected.</MRA_VerdictTip_NoDetectedInstances>
+  <MRA_VerdictTip_Incomplete>Absence of findings cannot be relied on: see the Coverage section and the unknown-origin note.</MRA_VerdictTip_Incomplete>
+  <MRA_NoteUnscannedDefs>Also defines {0} def(s) of types this version does not scan: {1}</MRA_NoteUnscannedDefs>
+  <MRA_NoteAssemblies>Loads its own C# assemblies; custom data it saves is not inspected.</MRA_NoteAssemblies>
+  <MRA_NoteDependents>Listed as a dependency by: {0}</MRA_NoteDependents>
+  <MRA_Unattributed>{0} instance(s) of {1} def(s) have no recorded source mod and may belong to any mod, including a selected one. Hover for details.</MRA_Unattributed>
+
+  <!-- Coverage -->
+  <MRA_CoverageHeading>Coverage</MRA_CoverageHeading>
+  <MRA_CoverageLine>{0}: {1}</MRA_CoverageLine>
+  <MRA_Scope_provenance>Mod ownership index</MRA_Scope_provenance>
+  <MRA_Scope_maps>All loaded maps: spawned things and nested contents</MRA_Scope_maps>
+  <MRA_Scope_world>World objects: caravans, settlement stock, transport pods, gravships</MRA_Scope_world>
+  <MRA_Scope_worldpawns>World pawns and their gear</MRA_Scope_worldpawns>
+  <MRA_Scope_terrain>Terrain on all loaded maps (all layers)</MRA_Scope_terrain>
+  <MRA_Scope_pawndata>Pawn data (hediffs, genes, traits, abilities, xenotypes)</MRA_Scope_pawndata>
+  <MRA_Scope_records>Bills, research, quests, factions, ideoligions, tales and art</MRA_Scope_records>
+  <MRA_Scope_customdata>Mod-specific saved data and runtime-generated content</MRA_Scope_customdata>
+  <MRA_Scope_gravshipterrain>Terrain carried by a gravship in flight</MRA_Scope_gravshipterrain>
+  <MRA_Scope_unloaded>Maps and saves that are not currently loaded</MRA_Scope_unloaded>
+  <MRA_ScopeTip_provenance>Which mod declares each thing and terrain def, built from the loaded mods' def lists.</MRA_ScopeTip_provenance>
+  <MRA_ScopeTip_maps>Every loaded map, including maps you are not viewing and pocket maps: items, buildings, plants, pawns, blueprints/frames, and everything inside containers, inventories, apparel, equipment and corpses.</MRA_ScopeTip_maps>
+  <MRA_ScopeTip_world>Caravans and their cargo, settlement trade stock, travelling transport pods, sites and gravships in flight.</MRA_ScopeTip_world>
+  <MRA_ScopeTip_worldpawns>Pawns stored by the world (faction leaders, quest pawns, former colonists, dead pawns kept for relations) with their inventory, apparel and equipment.</MRA_ScopeTip_worldpawns>
+  <MRA_ScopeTip_terrain>Top, under, foundation and temporary terrain layers of every loaded map, counted per cell.</MRA_ScopeTip_terrain>
+  <MRA_ScopeTip_pawndata>Not inspected in this version. Planned for a later version.</MRA_ScopeTip_pawndata>
+  <MRA_ScopeTip_records>Not inspected in this version. Planned for a later version.</MRA_ScopeTip_records>
+  <MRA_ScopeTip_customdata>Mods can save arbitrary data of their own; it cannot be inspected generically.</MRA_ScopeTip_customdata>
+  <MRA_ScopeTip_gravshipterrain>Things and pawns aboard a gravship in flight are scanned, its stored floor tiles are not.</MRA_ScopeTip_gravshipterrain>
+  <MRA_ScopeTip_unloaded>Only the save that is currently loaded is inspected.</MRA_ScopeTip_unloaded>
+  <MRA_Status_Pending>pending</MRA_Status_Pending>
+  <MRA_Status_Checked>checked</MRA_Status_Checked>
+  <MRA_Status_Partial>partially checked</MRA_Status_Partial>
+  <MRA_Status_Failed>FAILED</MRA_Status_Failed>
+  <MRA_Status_Cancelled>cancelled</MRA_Status_Cancelled>
+  <MRA_Status_NotCovered>not covered</MRA_Status_NotCovered>
+  <MRA_Warn_HoldersFailed>{0} container(s) could not be read ({1}); see the log.</MRA_Warn_HoldersFailed>
+  <MRA_Warn_DepthLimit>{0} deeply nested container(s) skipped.</MRA_Warn_DepthLimit>
+  <MRA_Warn_MapsRemoved>{0} map(s) were removed during the scan and skipped.</MRA_Warn_MapsRemoved>
+  <MRA_FindingsTruncated>Very many distinct locations: further locations were merged into "other locations" rows. Counts are complete.</MRA_FindingsTruncated>
+
+  <!-- Findings -->
+  <MRA_FindingsHeading>Findings</MRA_FindingsHeading>
+  <MRA_NoFindings>No content from the selected mods was found in the checked scopes.</MRA_NoFindings>
+  <MRA_Category_Items>Items</MRA_Category_Items>
+  <MRA_Category_Buildings>Buildings</MRA_Category_Buildings>
+  <MRA_Category_Terrain>Terrain</MRA_Category_Terrain>
+  <MRA_Category_ContainedEquipped>Contained / equipped</MRA_Category_ContainedEquipped>
+  <MRA_Category_WorldCaravan>World / caravan</MRA_Category_WorldCaravan>
+  <MRA_Category_Material>Used as material (stuff)</MRA_Category_Material>
+  <MRA_Category_Other>Other (pawns, plants, filth, blueprints…)</MRA_Category_Other>
+  <MRA_CountInstances>×{0}</MRA_CountInstances>
+  <MRA_CountInstancesItems>×{0} ({1} items)</MRA_CountInstancesItems>
+  <MRA_CountCells>{0} cell(s)</MRA_CountCells>
+  <MRA_Confidence_Confirmed>source confirmed</MRA_Confidence_Confirmed>
+  <MRA_Confidence_Uncertain>source uncertain</MRA_Confidence_Uncertain>
+  <MRA_Confidence_Unknown>source unknown</MRA_Confidence_Unknown>
+  <MRA_Reason_Declared>Declared by this mod and by no other loaded mod.</MRA_Reason_Declared>
+  <MRA_Reason_Shadowed>Another loaded mod declares a def with the same name; removing one of them may leave the other's version in place.</MRA_Reason_Shadowed>
+  <MRA_Reason_NotInOwnerDefs>The def names this mod as its source but is not in the mod's own def list (probably created by code at runtime).</MRA_Reason_NotInOwnerDefs>
+  <MRA_Reason_NoOwner>The def has no recorded source mod.</MRA_Reason_NoOwner>
+  <MRA_TipSource>Source mod: {0}</MRA_TipSource>
+  <MRA_TipAlsoDeclared>Also declared by: {0}</MRA_TipAlsoDeclared>
+  <MRA_TipHandlesTruncated>Jump cycles through the first {0} instances only.</MRA_TipHandlesTruncated>
+
+  <!-- Locations -->
+  <MRA_MapNumber>Map #{0}</MRA_MapNumber>
+  <MRA_MapNamed>{0} (map #{1})</MRA_MapNamed>
+  <MRA_Loc_Map>{0} at ({1}, {2})</MRA_Loc_Map>
+  <MRA_Loc_Held>{0} of {1} — {2}</MRA_Loc_Held>
+  <MRA_Loc_HeldWorld>{0} of {1} (world)</MRA_Loc_HeldWorld>
+  <MRA_Loc_MapUnspawned>Held by {0} (not placed on a cell)</MRA_Loc_MapUnspawned>
+  <MRA_Loc_Gravship>Aboard gravship in flight: {0}</MRA_Loc_Gravship>
+  <MRA_Loc_WorldPawn>World pawn: {0} (not on any map)</MRA_Loc_WorldPawn>
+  <MRA_Loc_WorldPawnDead>Dead world pawn: {0} (not on any map)</MRA_Loc_WorldPawnDead>
+  <MRA_Loc_OffMap>off-map</MRA_Loc_OffMap>
+  <MRA_Loc_Unknown>Unknown location</MRA_Loc_Unknown>
+  <MRA_Loc_Overflow>Other locations (merged)</MRA_Loc_Overflow>
+  <MRA_Loc_Terrain>{0}, {1}, e.g. at ({2}, {3})</MRA_Loc_Terrain>
+  <MRA_TerrainLayer_top>top layer</MRA_TerrainLayer_top>
+  <MRA_TerrainLayer_under>under layer</MRA_TerrainLayer_under>
+  <MRA_TerrainLayer_foundation>foundation layer</MRA_TerrainLayer_foundation>
+  <MRA_TerrainLayer_temp>temporary layer</MRA_TerrainLayer_temp>
+  <MRA_Holder_Inventory>Inventory</MRA_Holder_Inventory>
+  <MRA_Holder_Apparel>Apparel</MRA_Holder_Apparel>
+  <MRA_Holder_Equipment>Equipment</MRA_Holder_Equipment>
+  <MRA_Holder_Carried>Carried by</MRA_Holder_Carried>
+  <MRA_Holder_TradeStock>Trade stock</MRA_Holder_TradeStock>
+  <MRA_Holder_Container>Contents</MRA_Holder_Container>
+  <MRA_Holder_None>Held</MRA_Holder_None>
+
+  <!-- Jump -->
+  <MRA_Jump>Jump</MRA_Jump>
+  <MRA_JumpNext>Jump (next)</MRA_JumpNext>
+  <MRA_JumpTip>Closes this window and shows the location. Reopen the window to see this result again. {0} instance location(s) recorded.</MRA_JumpTip>
+  <MRA_Jump_Gone>It no longer exists. Re-scan for current data.</MRA_Jump_Gone>
+  <MRA_Jump_Changed>The terrain there has changed. Re-scan for current data.</MRA_Jump_Changed>
+  <MRA_Jump_OffMap>Not on a loaded map or world object (for example a world pawn); see the holder text.</MRA_Jump_OffMap>
+  <MRA_Jump_NoLocation>No navigable location.</MRA_Jump_NoLocation>
+
+
+</LanguageData>

@@ -1,0 +1,37 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Unit tests (engine-independent audit core)
+        run: dotnet test Tests/ModRemovalAuditor.Tests -c Release
+
+      - name: Translation / XML check
+        run: python3 tools/check_translations.py
+
+      # The mod assembly needs the proprietary RimWorld 1.7 assemblies, which are never stored in
+      # this repository. A runner that legitimately provides them sets RIMWORLD_17_DIR.
+      - name: RimWorld 1.7 build
+        env:
+          RIMWORLD_17_DIR: ${{ vars.RIMWORLD_17_DIR }}
+        run: |
+          if [ -n "$RIMWORLD_17_DIR" ] && [ -f "$RIMWORLD_17_DIR/Assembly-CSharp.dll" ]; then
+            dotnet build Source/ModRemovalAuditor/ModRemovalAuditor.csproj -c Release
+          else
+            echo "::notice::RimWorld 1.7 assemblies not available on this runner: integration build SKIPPED (not passed)."
+          fi

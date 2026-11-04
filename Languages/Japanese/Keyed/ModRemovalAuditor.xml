@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- 全般 -->
+  <MRA_ModName>Mod Removal Auditor</MRA_ModName>
+  <MRA_SettingsIntro>読み込み中のセーブを読み取り専用で調べます。有効なMODを選ぶと、そのMOD由来の内容がまだ残っているかを表示します。何も変更・保存しません。</MRA_SettingsIntro>
+  <MRA_OpenAuditor>Mod Removal Auditor を開く</MRA_OpenAuditor>
+  <MRA_NeedLoadedGame>使うにはセーブを読み込む（またはゲームを開始する）必要があります。</MRA_NeedLoadedGame>
+  <MRA_Disclaimer>現在読み込んでいるセーブの読み取り専用調査です。「検出なし」は「調査範囲」に記載した範囲のみの結果であり、MODを安全に削除できる保証ではありません。MODを無効化する前にセーブをバックアップし、無効化後に試しにロードして確認してください。</MRA_Disclaimer>
+
+  <!-- MOD一覧 -->
+  <MRA_SelectMods>有効なMOD（Core・DLCは表示しません）</MRA_SelectMods>
+  <MRA_SearchHint>名前またはパッケージIDで検索…</MRA_SearchHint>
+  <MRA_SelectVisible>表示中を選択</MRA_SelectVisible>
+  <MRA_ClearSelection>選択解除</MRA_ClearSelection>
+  <MRA_SelectedCount>{1}件中 {0}件を選択</MRA_SelectedCount>
+  <MRA_Scan>調査</MRA_Scan>
+  <MRA_Rescan>再調査</MRA_Rescan>
+  <MRA_Cancel>調査を中止</MRA_Cancel>
+
+  <!-- 進行状況 -->
+  <MRA_NoReportYet>左の一覧からMODを1つ以上選び、「調査」を押してください。このウィンドウを開いている間、ゲームは一時停止します。</MRA_NoReportYet>
+  <MRA_Scanning>調査中：{0}（段階 {1}／{2}）</MRA_Scanning>
+  <MRA_ScannedUnits>{0} 単位を処理済み</MRA_ScannedUnits>
+  <MRA_ScanningHint>ゲームを一時停止したまま、毎フレーム少しずつ調査します。中止すると途中までの結果は破棄されます。</MRA_ScanningHint>
+  <MRA_ScanCancelled>調査を中止しました。中止した調査の結果は表示しません。もう一度行うには「調査」を押してください。</MRA_ScanCancelled>
+  <MRA_ScanFailed>調査に失敗したため、結果はありません：{0}</MRA_ScanFailed>
+  <MRA_AbortGameChanged>調査中に読み込み中のゲームが変わりました。</MRA_AbortGameChanged>
+  <MRA_ReportTime>{0} に調査（{1} 単位）。</MRA_ReportTime>
+  <MRA_CachedReport>{0} に行った前回の調査結果です。その後コロニーが変化している可能性があります。最新の状態は「再調査」で確認してください。</MRA_CachedReport>
+
+  <!-- 概要 -->
+  <MRA_SummaryHeading>概要</MRA_SummaryHeading>
+  <MRA_Verdict_Detected>検出あり：{0}個が見つかりました。このMODを削除する前に確認してください。</MRA_Verdict_Detected>
+  <MRA_Verdict_NoDetectedInstances>調査した範囲では検出されませんでした（安全な削除の保証ではありません）。</MRA_Verdict_NoDetectedInstances>
+  <MRA_Verdict_Incomplete>不完全：見つかりませんでしたが、一部の範囲が部分的・失敗したか、出自不明の内容があります。</MRA_Verdict_Incomplete>
+  <MRA_VerdictTip_Detected>このMOD由来の物・素材・床材が、調査した範囲に少なくとも1つ残っています。</MRA_VerdictTip_Detected>
+  <MRA_VerdictTip_NoDetectedInstances>試みた範囲はすべて完了し、このMOD由来のものは見つかりませんでした。記載範囲外のデータ（ポーンのデータ、クエスト、研究、MOD独自の保存データなど）は調べていません。</MRA_VerdictTip_NoDetectedInstances>
+  <MRA_VerdictTip_Incomplete>検出がないことを根拠にできません。「調査範囲」と出自不明の注記を確認してください。</MRA_VerdictTip_Incomplete>
+  <MRA_NoteUnscannedDefs>この版では調査しない種類のDefも {0}個 定義しています：{1}</MRA_NoteUnscannedDefs>
+  <MRA_NoteAssemblies>独自のC#アセンブリを読み込んでいます。このMODが独自に保存するデータは調べていません。</MRA_NoteAssemblies>
+  <MRA_NoteDependents>次のMODが依存先として指定しています：{0}</MRA_NoteDependents>
+  <MRA_Unattributed>{1}種類のDef、計{0}個に追加元MODの記録がなく、選択したMODを含むどのMODのものでもあり得ます。マウスを重ねると詳細を表示します。</MRA_Unattributed>
+
+  <!-- 調査範囲 -->
+  <MRA_CoverageHeading>調査範囲</MRA_CoverageHeading>
+  <MRA_CoverageLine>{0}：{1}</MRA_CoverageLine>
+  <MRA_Scope_provenance>MODごとの所有Def索引</MRA_Scope_provenance>
+  <MRA_Scope_maps>読み込み済みの全マップ：配置物と内部の中身</MRA_Scope_maps>
+  <MRA_Scope_world>ワールド上の物：キャラバン、拠点の在庫、輸送ポッド、グラビシップ</MRA_Scope_world>
+  <MRA_Scope_worldpawns>ワールドポーンと所持品</MRA_Scope_worldpawns>
+  <MRA_Scope_terrain>読み込み済みの全マップの床・地形（全レイヤー）</MRA_Scope_terrain>
+  <MRA_Scope_pawndata>ポーンのデータ（健康状態、遺伝子、特性、能力、ゼノタイプ）</MRA_Scope_pawndata>
+  <MRA_Scope_records>作業指示、研究、クエスト、勢力、イデオロギー、物語・美術品の題材</MRA_Scope_records>
+  <MRA_Scope_customdata>MOD独自の保存データと実行時に生成された内容</MRA_Scope_customdata>
+  <MRA_Scope_gravshipterrain>飛行中のグラビシップが運んでいる床</MRA_Scope_gravshipterrain>
+  <MRA_Scope_unloaded>現在読み込まれていないマップやセーブ</MRA_Scope_unloaded>
+  <MRA_ScopeTip_provenance>読み込まれた各MODのDef一覧から、どのMODがどの物・床のDefを定義しているかを作成します。</MRA_ScopeTip_provenance>
+  <MRA_ScopeTip_maps>表示していないマップやポケットマップを含む全マップの、アイテム・建築物・植物・ポーン・設計図／建設中のもの、そして容器・インベントリ・衣服・装備・死体の中身すべて。</MRA_ScopeTip_maps>
+  <MRA_ScopeTip_world>キャラバンと積み荷、拠点の交易在庫、移動中の輸送ポッド、サイト、飛行中のグラビシップ。</MRA_ScopeTip_world>
+  <MRA_ScopeTip_worldpawns>ワールドに保存されているポーン（勢力の指導者、クエストのポーン、元入植者、関係のため保持される死亡ポーン）と、そのインベントリ・衣服・装備。</MRA_ScopeTip_worldpawns>
+  <MRA_ScopeTip_terrain>全マップの上層・下層・基礎・一時の床レイヤーをマスごとに数えます。</MRA_ScopeTip_terrain>
+  <MRA_ScopeTip_pawndata>この版では調べません。今後の版で対応予定です。</MRA_ScopeTip_pawndata>
+  <MRA_ScopeTip_records>この版では調べません。今後の版で対応予定です。</MRA_ScopeTip_records>
+  <MRA_ScopeTip_customdata>MODは独自のデータを自由に保存できるため、汎用的には調べられません。</MRA_ScopeTip_customdata>
+  <MRA_ScopeTip_gravshipterrain>飛行中のグラビシップの物とポーンは調べますが、保存されている床タイルは調べません。</MRA_ScopeTip_gravshipterrain>
+  <MRA_ScopeTip_unloaded>現在読み込んでいるセーブだけを調べます。</MRA_ScopeTip_unloaded>
+  <MRA_Status_Pending>未実行</MRA_Status_Pending>
+  <MRA_Status_Checked>調査済み</MRA_Status_Checked>
+  <MRA_Status_Partial>一部のみ調査</MRA_Status_Partial>
+  <MRA_Status_Failed>失敗</MRA_Status_Failed>
+  <MRA_Status_Cancelled>中止</MRA_Status_Cancelled>
+  <MRA_Status_NotCovered>対象外</MRA_Status_NotCovered>
+  <MRA_Warn_HoldersFailed>{0}個の容器を読み取れませんでした（{1}）。ログを確認してください。</MRA_Warn_HoldersFailed>
+  <MRA_Warn_DepthLimit>深く入れ子になった容器 {0}個を飛ばしました。</MRA_Warn_DepthLimit>
+  <MRA_Warn_MapsRemoved>調査中に {0}個のマップが消えたため飛ばしました。</MRA_Warn_MapsRemoved>
+  <MRA_FindingsTruncated>場所の種類が非常に多いため、それ以降の場所は「その他の場所」の行にまとめました。個数はすべて数えています。</MRA_FindingsTruncated>
+
+  <!-- 検出結果 -->
+  <MRA_FindingsHeading>検出結果</MRA_FindingsHeading>
+  <MRA_NoFindings>調査した範囲では、選択したMODの内容は見つかりませんでした。</MRA_NoFindings>
+  <MRA_Category_Items>アイテム</MRA_Category_Items>
+  <MRA_Category_Buildings>建築物</MRA_Category_Buildings>
+  <MRA_Category_Terrain>床・地形</MRA_Category_Terrain>
+  <MRA_Category_ContainedEquipped>収納・装備中</MRA_Category_ContainedEquipped>
+  <MRA_Category_WorldCaravan>ワールド・キャラバン</MRA_Category_WorldCaravan>
+  <MRA_Category_Material>素材として使用</MRA_Category_Material>
+  <MRA_Category_Other>その他（ポーン、植物、汚れ、設計図など）</MRA_Category_Other>
+  <MRA_CountInstances>×{0}</MRA_CountInstances>
+  <MRA_CountInstancesItems>×{0}（アイテム数 {1}）</MRA_CountInstancesItems>
+  <MRA_CountCells>{0}マス</MRA_CountCells>
+  <MRA_Confidence_Confirmed>出自確認済み</MRA_Confidence_Confirmed>
+  <MRA_Confidence_Uncertain>出自不確定</MRA_Confidence_Uncertain>
+  <MRA_Confidence_Unknown>出自不明</MRA_Confidence_Unknown>
+  <MRA_Reason_Declared>このMODが定義しており、他の読み込み済みMODは定義していません。</MRA_Reason_Declared>
+  <MRA_Reason_Shadowed>同じ名前のDefを別のMODも定義しています。一方を削除しても、もう一方の定義が残る可能性があります。</MRA_Reason_Shadowed>
+  <MRA_Reason_NotInOwnerDefs>このMODを出自としていますが、MOD自身のDef一覧に含まれていません（実行時にコードで作られた可能性があります）。</MRA_Reason_NotInOwnerDefs>
+  <MRA_Reason_NoOwner>追加元MODの記録がありません。</MRA_Reason_NoOwner>
+  <MRA_TipSource>追加元MOD：{0}</MRA_TipSource>
+  <MRA_TipAlsoDeclared>同名Defを定義している他のMOD：{0}</MRA_TipAlsoDeclared>
+  <MRA_TipHandlesTruncated>ジャンプは最初の{0}個のみを順に表示します。</MRA_TipHandlesTruncated>
+
+  <!-- 場所 -->
+  <MRA_MapNumber>マップ #{0}</MRA_MapNumber>
+  <MRA_MapNamed>{0}（マップ #{1}）</MRA_MapNamed>
+  <MRA_Loc_Map>{0}（{1}, {2}）</MRA_Loc_Map>
+  <MRA_Loc_Held>{1}の{0} — {2}</MRA_Loc_Held>
+  <MRA_Loc_HeldWorld>{1}の{0}（ワールド）</MRA_Loc_HeldWorld>
+  <MRA_Loc_MapUnspawned>{0}が保持（マス上には未配置）</MRA_Loc_MapUnspawned>
+  <MRA_Loc_Gravship>飛行中のグラビシップに搭載：{0}</MRA_Loc_Gravship>
+  <MRA_Loc_WorldPawn>ワールドポーン：{0}（どのマップにもいません）</MRA_Loc_WorldPawn>
+  <MRA_Loc_WorldPawnDead>死亡したワールドポーン：{0}（どのマップにもいません）</MRA_Loc_WorldPawnDead>
+  <MRA_Loc_OffMap>マップ外</MRA_Loc_OffMap>
+  <MRA_Loc_Unknown>場所不明</MRA_Loc_Unknown>
+  <MRA_Loc_Overflow>その他の場所（まとめて表示）</MRA_Loc_Overflow>
+  <MRA_Loc_Terrain>{0}、{1}、例：（{2}, {3}）</MRA_Loc_Terrain>
+  <MRA_TerrainLayer_top>上層</MRA_TerrainLayer_top>
+  <MRA_TerrainLayer_under>下層</MRA_TerrainLayer_under>
+  <MRA_TerrainLayer_foundation>基礎</MRA_TerrainLayer_foundation>
+  <MRA_TerrainLayer_temp>一時レイヤー</MRA_TerrainLayer_temp>
+  <MRA_Holder_Inventory>インベントリ</MRA_Holder_Inventory>
+  <MRA_Holder_Apparel>衣服</MRA_Holder_Apparel>
+  <MRA_Holder_Equipment>装備</MRA_Holder_Equipment>
+  <MRA_Holder_Carried>運搬物</MRA_Holder_Carried>
+  <MRA_Holder_TradeStock>交易在庫</MRA_Holder_TradeStock>
+  <MRA_Holder_Container>中身</MRA_Holder_Container>
+  <MRA_Holder_None>所持品</MRA_Holder_None>
+
+  <!-- ジャンプ -->
+  <MRA_Jump>移動</MRA_Jump>
+  <MRA_JumpNext>移動（次へ）</MRA_JumpNext>
+  <MRA_JumpTip>このウィンドウを閉じて場所を表示します。ウィンドウを開き直すとこの結果をもう一度表示できます。記録した場所は{0}件です。</MRA_JumpTip>
+  <MRA_Jump_Gone>もう存在しません。最新の状態は再調査で確認してください。</MRA_Jump_Gone>
+  <MRA_Jump_Changed>その場所の床が変わっています。最新の状態は再調査で確認してください。</MRA_Jump_Changed>
+  <MRA_Jump_OffMap>読み込み中のマップやワールド上の物の中にありません（ワールドポーンなど）。所持者の表示を確認してください。</MRA_Jump_OffMap>
+  <MRA_Jump_NoLocation>移動できる場所がありません。</MRA_Jump_NoLocation>
+
+
+</LanguageData>

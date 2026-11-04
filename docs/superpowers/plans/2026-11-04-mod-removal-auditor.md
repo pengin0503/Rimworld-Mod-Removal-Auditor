@@ -159,3 +159,16 @@ Pure data model/aggregator classes should have no engine references where practi
 ## Implementation handoff
 
 Recommended execution method: **native, single implementer**, followed by an independent final review if available; modules share data-model interfaces and parallel agents would add integration overhead. No source code, GitHub repository, test run or release is created by this planning document. User approval of the design is required before implementation.
+## Implementation notes (2026-11-04)
+
+Executed inline, task by task. Deviations from this plan, verified against the 1.7.4985 rev1269 assemblies:
+
+- **Adapter contract:** `IScanSource.Step(List<AuditObservation>) -> bool` (one budget unit per step) instead of `IEnumerator<AuditObservation>`, so terrain can process one map row per unit and holders can emit several observations.
+- **Extra pure file:** `Audit/HolderTraversal.cs` — generic, cycle-safe, incremental holder walk that carries the Task 4 contract tests without game assemblies.
+- **Scopes:** `provenance` (critical), `maps` (every spawned thing is in `Map.spawnedThings`, so one Map-holder traversal covers spawned and nested content), `world` (World holder plus gravships in flight), `worldpawns`, `terrain` (top/under/foundation/temp layers). Out-of-scope areas are listed as `NotCovered` in every report.
+- **Provenance:** `Def.modContentPack` + reference membership in that pack's `AllDefs` (`DefGenerator.AddImpliedDef` registers implied defs there) + declarers by (database def type, defName). No owner → Unknown; owner not listing the def → Uncertain; several declarers → Uncertain (shadowed).
+- **Verdict:** `No detected instances` requires every attempted scope `Checked` and no unknown-origin instances; `NotCovered` scopes are shown but do not force `Incomplete`.
+- **Material:** things made of a mod's stuff are reported under a `Material` category.
+- **Entry points:** minimized bottom-bar `MainButtonDef` and a button on the mod settings page. Jump closes the window; the last report is kept only in memory (weak references, discarded when another game is loaded).
+- **Signatures:** `AuditSession(targets, sources, resolve, ...)` + `Start()`; `AuditAccumulator.BuildReport(state, targets, coverage, units)`; `AuditNavigation.TryJump(finding, ref cursor)`.
+- **Not performed (no runnable client):** in-game smoke test, fixture-save integration, UI checklist, in-game performance benchmark. A synthetic core benchmark (300k observations) measured ~1.3 µs per unit.
