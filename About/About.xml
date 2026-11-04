@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Mod Removal Auditor</name>
+  <packageId>pengin0503.modremovalauditor</packageId>
+  <author>pengin0503</author>
+  <url>https://github.com/pengin0503/Rimworld-Mod-Removal-Auditor</url>
+  <modVersion>1.0.0</modVersion>
+  <supportedVersions>
+    <li>1.7</li>
+  </supportedVersions>
+  <description>Read-only, on-demand audit for the currently loaded save: pick one or more enabled mods and see which of their items, buildings, materials, terrain, nested inventory/equipment, caravan cargo and world-pawn gear are still present, with counts, holders and jump links.
+
+It never deletes, converts or saves anything, adds no Harmony patches and stores nothing in your save. A result with no detections only covers the scanned scopes and is NOT a guarantee that a mod is safe to remove: always back up your save and test-load it.
+
+Open it from the small magnifier button on the bottom bar or from Options > Mod settings > Mod Removal Auditor.
+
+現在読み込んでいるセーブを読み取り専用で調査するツールです。有効なMODを1つ以上選ぶと、そのMOD由来のアイテム・建築物・素材・床材・インベントリ／装備の中身・キャラバンの荷物・ワールドポーンの所持品がどれだけ残っているかを、個数・所持者・ジャンプ先付きで表示します。
+
+削除・変換・保存は一切行わず、Harmonyパッチも使わず、セーブにデータを追加しません。検出0件は調査した範囲での結果にすぎず、MODを安全に削除できる保証ではありません。必ずセーブをバックアップし、試しにロードして確認してください。
+
+画面下部の虫眼鏡ボタン、または「オプション＞MODの設定＞Mod Removal Auditor」から開けます。</description>
+</ModMetaData>
