@@ -261,15 +261,15 @@ namespace ModRemovalAuditor.UI
 
         private void StartScan()
         {
-            List<AuditTarget> targets = new List<AuditTarget>();
+            List<ModContentPack> packs = new List<ModContentPack>();
             for (int i = 0; i < mods.Count; i++)
             {
                 if (selected.Contains(mods[i].Key))
                 {
-                    targets.Add(GameScan.BuildTarget(mods[i].Pack));
+                    packs.Add(mods[i].Pack);
                 }
             }
-            StartScan(targets);
+            StartScan(GameScan.BuildTargets(packs));
         }
 
         /// <summary>Starts a new scan for the given targets, replacing any previous result.</summary>

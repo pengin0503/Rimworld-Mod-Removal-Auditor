@@ -26,7 +26,7 @@ DYNAMIC = {
     "MRA_VerdictTip_": ["Detected", "NoDetectedInstances", "Incomplete"],
     "MRA_Scope_": None,      # filled from scope ids below
     "MRA_ScopeTip_": None,
-    "MRA_Holder_": ["Inventory", "Apparel", "Equipment", "Carried", "Caravan", "TradeStock", "Container", "None"],
+    "MRA_Holder_": ["Inventory", "Apparel", "Equipment", "Carried", "TradeStock", "Container", "None"],
     "MRA_TerrainLayer_": ["top", "under", "foundation", "temp"],
 }
 

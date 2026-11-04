@@ -38,7 +38,50 @@ namespace ModRemovalAuditor.Audit
             return pack != null && !pack.IsCoreMod && !pack.IsOfficialMod && ModKey.TryParse(pack.PackageId, out ModKey key) && !key.IsLudeonOfficial;
         }
 
-        public static AuditTarget BuildTarget(ModContentPack pack)
+        /// <summary>Builds audit targets; dependency metadata of all running mods is read once.</summary>
+        public static List<AuditTarget> BuildTargets(IReadOnlyList<ModContentPack> packs)
+        {
+            Dictionary<ModKey, List<string>> dependents = new Dictionary<ModKey, List<string>>();
+            List<ModContentPack> running = LoadedModManager.RunningModsListForReading;
+            for (int i = 0; i < running.Count; i++)
+            {
+                ModContentPack other = running[i];
+                List<ModDependency> deps = other.ModMetaData?.Dependencies;
+                if (deps == null)
+                {
+                    continue;
+                }
+                for (int j = 0; j < deps.Count; j++)
+                {
+                    if (deps[j]?.packageId == null || !ModKey.TryParse(deps[j].packageId, out ModKey depKey))
+                    {
+                        continue;
+                    }
+                    if (!dependents.TryGetValue(depKey, out List<string> names))
+                    {
+                        names = new List<string>();
+                        dependents.Add(depKey, names);
+                    }
+                    if (!names.Contains(other.Name))
+                    {
+                        names.Add(other.Name);
+                    }
+                }
+            }
+            List<AuditTarget> targets = new List<AuditTarget>(packs.Count);
+            for (int i = 0; i < packs.Count; i++)
+            {
+                AuditTarget target = BuildTarget(packs[i]);
+                if (dependents.TryGetValue(target.Key, out List<string> names))
+                {
+                    target.DependentMods.AddRange(names);
+                }
+                targets.Add(target);
+            }
+            return targets;
+        }
+
+        private static AuditTarget BuildTarget(ModContentPack pack)
         {
             ModKey key = ModKey.Parse(pack.PackageId);
             AuditTarget target = new AuditTarget(key, pack.Name, pack.PackageIdPlayerFacing);
@@ -57,29 +100,6 @@ namespace ModRemovalAuditor.Audit
                 target.DeclaredDefCounts[type] = n + 1;
             }
             target.HasAssemblies = pack.assemblies?.loadedAssemblies != null && pack.assemblies.loadedAssemblies.Count > 0;
-
-            List<ModContentPack> running = LoadedModManager.RunningModsListForReading;
-            for (int i = 0; i < running.Count; i++)
-            {
-                ModContentPack other = running[i];
-                if (other == pack)
-                {
-                    continue;
-                }
-                List<ModDependency> deps = other.ModMetaData?.Dependencies;
-                if (deps == null)
-                {
-                    continue;
-                }
-                for (int j = 0; j < deps.Count; j++)
-                {
-                    if (deps[j]?.packageId != null && ModKey.TryParse(deps[j].packageId, out ModKey depKey) && depKey == key)
-                    {
-                        target.DependentMods.Add(other.Name);
-                        break;
-                    }
-                }
-            }
             return target;
         }
 
@@ -105,7 +125,7 @@ namespace ModRemovalAuditor.Audit
                 sources,
                 shared.Resolve,
                 notCovered,
-                logError: message => Log.Error(message),
+                logError: message => Log.Warning(message),
                 abortCheck: () =>
                 {
                     if (Current.Game != game || Current.ProgramState != ProgramState.Playing)
@@ -191,12 +211,6 @@ namespace ModRemovalAuditor.Audit
             OriginResolution r = Index.Resolve(def, observation.DefId, owner);
             cache[def] = r;
             return r;
-        }
-
-        public void Release()
-        {
-            cache.Clear();
-            VisitedHolders.Clear();
         }
     }
 
@@ -396,10 +410,15 @@ namespace ModRemovalAuditor.Audit
 
         public override void End()
         {
+            if (Traversal != null && Traversal.FailedHolders > 0 && Traversal.FirstError != null)
+            {
+                Log.Warning("[ModRemovalAuditor] Scope '" + ScopeId + "': " + Traversal.FailedHolders
+                    + " container(s) could not be read and were skipped. First error: " + Traversal.FirstError);
+            }
             Traversal?.Clear();
         }
 
-        protected virtual AuditCategory CategoryFor(Thing thing, IThingHolder holder)
+        private static AuditCategory CategoryFor(Thing thing, IThingHolder holder)
         {
             if (thing.Spawned)
             {
@@ -501,11 +520,6 @@ namespace ModRemovalAuditor.Audit
             base.End();
             GravshipRoots.Clear();
         }
-
-        protected override AuditCategory CategoryFor(Thing thing, IThingHolder holder)
-        {
-            return thing.Spawned ? GameObservations.SpawnedCategory(thing) : AuditCategory.WorldCaravan;
-        }
     }
 
     /// <summary>Pawns kept by the world (faction leaders, quest pawns, mothballed and dead pawns) and their gear.</summary>
@@ -536,15 +550,6 @@ namespace ModRemovalAuditor.Audit
                 Traversal.EnqueueItem(pawn, null);
                 Traversal.AddRoot(pawn);
             }
-        }
-
-        protected override AuditCategory CategoryFor(Thing thing, IThingHolder holder)
-        {
-            if (thing.Spawned)
-            {
-                return GameObservations.SpawnedCategory(thing);
-            }
-            return thing.MapHeld != null ? AuditCategory.ContainedEquipped : AuditCategory.WorldCaravan;
         }
     }
 
@@ -592,7 +597,8 @@ namespace ModRemovalAuditor.Audit
                 return false;
             }
             Map map = maps[mapIndex];
-            if (map == null || map.terrainGrid == null || !Find.Maps.Contains(map))
+            List<Map> live = Find.Maps;
+            if (map == null || map.terrainGrid == null || live == null || !live.Contains(map))
             {
                 skippedMaps++;
                 NextMap();
@@ -908,8 +914,6 @@ namespace ModRemovalAuditor.Audit
                     return "Equipment";
                 case Pawn_CarryTracker _:
                     return "Carried";
-                case Caravan _:
-                    return "Caravan";
                 case Settlement_TraderTracker _:
                     return "TradeStock";
                 case null:
