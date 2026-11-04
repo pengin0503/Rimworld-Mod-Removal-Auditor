@@ -1,7 +1,7 @@
 # Mod Removal Auditor — Design Specification
 
 **Date:** 2026-11-04  
-**Status:** Proposed design (implementation not started, user review pending)  
+**Status:** Implemented as v1.0 (compiled against 1.7.4985; in-game verification pending — see README)  
 **Game:** RimWorld 1.7 / Waylith / .NET 10  
 **Working title:** Mod Removal Auditor (MRA)  
 **Proposed packageId:** `pengin0503.modremovalauditor` (must confirm before release)
