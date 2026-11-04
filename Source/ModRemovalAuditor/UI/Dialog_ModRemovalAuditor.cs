@@ -425,18 +425,20 @@ namespace ModRemovalAuditor.UI
             }
 
             Rect jumpRect = new Rect(r.xMax - JumpButtonWidth - 4f, r.y + 2f, JumpButtonWidth, Mathf.Min(28f, r.height - 4f));
-            int cursor = row.JumpCursor;
+            int cursor = AuditResultCache.GetCursor(row.Finding);
             bool canJump = AuditNavigation.TryFindTarget(row.Finding, ref cursor, out _, out string reasonKey);
             if (canJump)
             {
                 string label = row.Finding.JumpHandles.Count > 1 ? "MRA_JumpNext".Translate() : "MRA_Jump".Translate();
                 if (Widgets.ButtonText(jumpRect, label))
                 {
-                    int c = row.JumpCursor;
+                    // The cursor lives in the cache, not in the row: jumping closes this window and
+                    // the rows are rebuilt when it is reopened, so "next" must survive that.
+                    int c = AuditResultCache.GetCursor(row.Finding);
                     Close(doCloseSound: false);
                     if (AuditNavigation.TryJump(row.Finding, ref c))
                     {
-                        row.JumpCursor = c;
+                        AuditResultCache.SetCursor(row.Finding, c);
                     }
                 }
                 TooltipHandler.TipRegion(jumpRect, "MRA_JumpTip".Translate(row.Finding.JumpHandles.Count));
@@ -679,8 +681,6 @@ namespace ModRemovalAuditor.UI
             public string Tooltip { get; }
 
             public AuditFinding Finding { get; }
-
-            public int JumpCursor { get; set; }
         }
 
         private sealed class ModEntry
@@ -716,11 +716,26 @@ namespace ModRemovalAuditor.UI
         private static System.WeakReference<Game> game;
         private static AuditReport report;
         private static readonly List<ModKey> Selection = new List<ModKey>();
+        private static readonly Dictionary<AuditFinding, int> Cursors = new Dictionary<AuditFinding, int>(ReferenceEqualityComparer.Instance);
+
+        public static int GetCursor(AuditFinding finding)
+        {
+            return finding != null && Cursors.TryGetValue(finding, out int c) ? c : 0;
+        }
+
+        public static void SetCursor(AuditFinding finding, int cursor)
+        {
+            if (finding != null)
+            {
+                Cursors[finding] = cursor;
+            }
+        }
 
         public static void Store(AuditReport value, IEnumerable<ModKey> selection)
         {
             game = new System.WeakReference<Game>(Current.Game);
             report = value;
+            Cursors.Clear();
             Selection.Clear();
             Selection.AddRange(selection);
         }
@@ -745,6 +760,7 @@ namespace ModRemovalAuditor.UI
         {
             game = null;
             report = null;
+            Cursors.Clear();
             Selection.Clear();
         }
     }
