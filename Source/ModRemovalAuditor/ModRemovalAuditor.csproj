@@ -24,6 +24,8 @@
     <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
     <DebugType>none</DebugType>
     <Deterministic>true</Deterministic>
+    <!-- Keep the assembly independent of the git commit so a rebuild of a commit reproduces its DLL. -->
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
     <RimWorld17Dir Condition="'$(RimWorld17Dir)' == ''">$(RIMWORLD_17_DIR)</RimWorld17Dir>
   </PropertyGroup>
 
