@@ -18,18 +18,36 @@ namespace ModRemovalAuditor.Audit
         public const string ScopeWorld = "world";
         public const string ScopeWorldPawns = "worldpawns";
         public const string ScopeTerrain = "terrain";
+        public const string ScopePawnData = "pawndata";
+        public const string ScopeBills = "bills";
+        public const string ScopeWorldObjects = "worldobjects";
+        public const string ScopeFactions = "factions";
+        public const string ScopeIdeology = "ideology";
+        public const string ScopeQuests = "quests";
+        public const string ScopeResearch = "research";
 
         /// <summary>Scopes this version deliberately does not inspect. Always shown in the coverage box.</summary>
         public static readonly string[] NotCoveredScopes =
         {
-            "pawndata",       // hediffs, genes, traits, abilities, xenotypes
-            "records",        // bills, research progress, quests, factions, ideoligions, tales/art
+            "pawnrecords",    // thoughts/memories, relations, records, royal titles, work and policy assignments
+            "filters",        // storage, bill-ingredient and outfit/food/drug policy filters
+            "questparts",     // quest internals beyond the root script
+            "tales",          // tales and art subjects
             "customdata",     // mod-specific saved fields and runtime-generated content
             "gravshipterrain",
             "unloaded",       // maps or saves that are not currently loaded
         };
 
-        internal static readonly HashSet<Type> ScannedDefRoots = new HashSet<Type> { typeof(ThingDef), typeof(TerrainDef) };
+        /// <summary>Def database types whose instances or references are scanned in this version.</summary>
+        internal static readonly Type[] ScannedDefRoots =
+        {
+            typeof(ThingDef), typeof(TerrainDef),
+            typeof(HediffDef), typeof(GeneDef), typeof(XenotypeDef), typeof(TraitDef), typeof(AbilityDef), typeof(PawnKindDef), typeof(BackstoryDef),
+            typeof(RecipeDef), typeof(ResearchProjectDef), typeof(QuestScriptDef), typeof(FactionDef),
+            typeof(MemeDef), typeof(PreceptDef), typeof(CultureDef), typeof(WorldObjectDef), typeof(SitePartDef),
+        };
+
+        private static HashSet<string> scannedDefTypeNames;
 
         private static readonly Dictionary<Type, string> DatabaseTypeNames = new Dictionary<Type, string>();
 
@@ -114,6 +132,13 @@ namespace ModRemovalAuditor.Audit
                 new WorldHolderSource(shared),
                 new WorldPawnSource(shared),
                 new TerrainSource(shared),
+                new PawnDataSource(shared),
+                new BillSource(shared),
+                new WorldObjectDefSource(shared),
+                new FactionSource(shared),
+                new IdeologySource(shared),
+                new QuestSource(shared),
+                new ResearchSource(shared),
             };
             List<CoverageEntry> notCovered = new List<CoverageEntry>();
             for (int i = 0; i < NotCoveredScopes.Length; i++)
@@ -136,12 +161,22 @@ namespace ModRemovalAuditor.Audit
                 });
         }
 
-        public static IEnumerable<string> ScannedDefTypeNames()
+        public static IEnumerable<string> ScannedDefTypeNames() => ScannedNameSet();
+
+        internal static bool IsScannedDefType(Type defType) => ScannedNameSet().Contains(DatabaseTypeName(defType));
+
+        private static HashSet<string> ScannedNameSet()
         {
-            foreach (Type t in ScannedDefRoots)
+            if (scannedDefTypeNames == null)
             {
-                yield return DatabaseTypeName(t);
+                HashSet<string> names = new HashSet<string>(StringComparer.Ordinal);
+                for (int i = 0; i < ScannedDefRoots.Length; i++)
+                {
+                    names.Add(DatabaseTypeName(ScannedDefRoots[i]));
+                }
+                scannedDefTypeNames = names;
             }
+            return scannedDefTypeNames;
         }
 
         /// <summary>
@@ -178,6 +213,57 @@ namespace ModRemovalAuditor.Audit
         public readonly Dictionary<ModContentPack, ModKey> PackKeys = new Dictionary<ModContentPack, ModKey>(ReferenceEqualityComparer.Instance);
 
         public readonly HashSet<IThingHolder> VisitedHolders = new HashSet<IThingHolder>(ReferenceEqualityComparer.Instance);
+
+        /// <summary>Every pawn reached by the thing traversals, in discovery order (input for the pawn-data scope).</summary>
+        public readonly List<Pawn> Pawns = new List<Pawn>();
+
+        /// <summary>Every bill giver reached by the thing traversals (work tables, pawns with surgery bills, ...).</summary>
+        public readonly List<Thing> BillGivers = new List<Thing>();
+
+        private readonly HashSet<Thing> seenOwners = new HashSet<Thing>(ReferenceEqualityComparer.Instance);
+
+        private readonly Dictionary<Thing, Gravship> gravshipByThing = new Dictionary<Thing, Gravship>(ReferenceEqualityComparer.Instance);
+
+        /// <summary>Gravships in flight hold their things and pawns without an IThingHolder; remember which ship holds what.</summary>
+        public void RegisterGravship(Gravship gravship)
+        {
+            foreach (Thing t in gravship.Things)
+            {
+                if (t != null)
+                {
+                    gravshipByThing[t] = gravship;
+                }
+            }
+            foreach (Pawn p in gravship.Pawns)
+            {
+                if (p != null)
+                {
+                    gravshipByThing[p] = gravship;
+                }
+            }
+        }
+
+        public Gravship GravshipOf(Thing thing) => thing != null && gravshipByThing.TryGetValue(thing, out Gravship g) ? g : null;
+
+        public void NoteThing(Thing thing)
+        {
+            if (!(thing is Pawn) && !(thing is IBillGiver))
+            {
+                return;
+            }
+            if (!seenOwners.Add(thing))
+            {
+                return;
+            }
+            if (thing is Pawn pawn)
+            {
+                Pawns.Add(pawn);
+            }
+            if (thing is IBillGiver)
+            {
+                BillGivers.Add(thing);
+            }
+        }
 
         private readonly Dictionary<Def, OriginResolution> cache = new Dictionary<Def, OriginResolution>(ReferenceEqualityComparer.Instance);
 
@@ -238,7 +324,7 @@ namespace ModRemovalAuditor.Audit
 
         public abstract void End();
 
-        public AuditLocation DescribeLocation(in AuditObservation observation) => GameLocations.Describe(observation);
+        public AuditLocation DescribeLocation(in AuditObservation observation) => GameLocations.Describe(observation, Shared);
 
         public string DescribeDef(object def)
         {
@@ -252,7 +338,7 @@ namespace ModRemovalAuditor.Audit
         }
     }
 
-    /// <summary>Critical first stage: indexes which pack declares which ThingDef / TerrainDef.</summary>
+    /// <summary>Critical first stage: indexes which pack declares which def of a scanned def type.</summary>
     internal sealed class ProvenanceSource : GameSourceBase
     {
         private const int DefsPerStep = 500;
@@ -298,7 +384,7 @@ namespace ModRemovalAuditor.Audit
                 {
                     budget--;
                     Def def = defs.Current;
-                    if (def is ThingDef || def is TerrainDef)
+                    if (def != null && GameScan.IsScannedDefType(def.GetType()))
                     {
                         Shared.Index.AddDeclaration(def, GameScan.IdentityOf(def), packKey);
                     }
@@ -374,12 +460,14 @@ namespace ModRemovalAuditor.Audit
             {
                 HolderTraversal<IThingHolder, Thing>.Emitted e = emitted[i];
                 Thing thing = e.Item;
-                if (thing.Destroyed)
+                // Destroyed pawns can remain saved as world pawns; other destroyed things are gone.
+                if (thing.Destroyed && !(thing is Pawn))
                 {
                     continue;
                 }
                 AuditCategory category = CategoryFor(thing, e.Holder);
                 GameObservations.AddThing(thing, category, e.Holder, output);
+                Shared.NoteThing(thing);
                 // Container things whose parent holder did not report them as children are expanded too;
                 // the shared visited set guarantees each holder is expanded at most once.
                 if (thing is IThingHolder holder)
@@ -502,7 +590,7 @@ namespace ModRemovalAuditor.Audit
             {
                 if (objects[i] is Gravship gravship)
                 {
-                    GravshipRoots.Register(gravship);
+                    Shared.RegisterGravship(gravship);
                     foreach (Thing t in gravship.Things)
                     {
                         Traversal.EnqueueItem(t, null);
@@ -513,12 +601,6 @@ namespace ModRemovalAuditor.Audit
                     }
                 }
             }
-        }
-
-        public override void End()
-        {
-            base.End();
-            GravshipRoots.Clear();
         }
     }
 
@@ -687,34 +769,6 @@ namespace ModRemovalAuditor.Audit
         public string LayerId { get; }
     }
 
-    /// <summary>Gravships in flight seen by the current world scan, used to describe their (holder-less) contents.</summary>
-    internal static class GravshipRoots
-    {
-        private static readonly Dictionary<Thing, Gravship> ByThing = new Dictionary<Thing, Gravship>(ReferenceEqualityComparer.Instance);
-
-        public static void Register(Gravship gravship)
-        {
-            foreach (Thing t in gravship.Things)
-            {
-                if (t != null)
-                {
-                    ByThing[t] = gravship;
-                }
-            }
-            foreach (Pawn p in gravship.Pawns)
-            {
-                if (p != null)
-                {
-                    ByThing[p] = gravship;
-                }
-            }
-        }
-
-        public static Gravship Find(Thing thing) => thing != null && ByThing.TryGetValue(thing, out Gravship g) ? g : null;
-
-        public static void Clear() => ByThing.Clear();
-    }
-
     internal static class GameObservations
     {
         public static AuditCategory SpawnedCategory(Thing thing)
@@ -752,8 +806,20 @@ namespace ModRemovalAuditor.Audit
     {
         private const int MaxParentWalk = 64;
 
-        public static AuditLocation Describe(in AuditObservation observation)
+        public static AuditLocation Describe(in AuditObservation observation, ScanShared shared)
         {
+            if (observation.Context is AuditLocation fixedLocation)
+            {
+                return fixedLocation;
+            }
+            if (observation.Context is OwnerContext owner)
+            {
+                AuditLocation where = DescribeThing(owner.Owner, shared, asOwner: true);
+                return new AuditLocation(
+                    where.GroupKey,
+                    "MRA_Loc_OnOwner".Translate(owner.Owner.LabelShortCap, where.Description).Resolve(),
+                    where.JumpHandle);
+            }
             if (observation.Context is TerrainContext terrain)
             {
                 string mapLabel = MapLabel(terrain.Map);
@@ -769,6 +835,15 @@ namespace ModRemovalAuditor.Audit
             {
                 return new AuditLocation("unknown", "MRA_Loc_Unknown".Translate().Resolve(), null);
             }
+            return DescribeThing(thing, shared, asOwner: false);
+        }
+
+        /// <summary>
+        /// Location of a thing. With <paramref name="asOwner"/> the text omits the thing's own name for
+        /// holder-less world pawns, because the caller prefixes it (pawn data, bills).
+        /// </summary>
+        private static AuditLocation DescribeThing(Thing thing, ScanShared shared, bool asOwner)
+        {
             ThingJumpHandle handle = new ThingJumpHandle(thing);
             if (thing.Spawned)
             {
@@ -812,7 +887,7 @@ namespace ModRemovalAuditor.Audit
             string kindText = ("MRA_Holder_" + kind).Translate().Resolve();
             if (anchorThing != null)
             {
-                string where = RootText(anchorThing);
+                string where = RootText(anchorThing, shared);
                 return new AuditLocation(
                     "thing:" + anchorThing.ThingID + ":" + kind,
                     "MRA_Loc_Held".Translate(kindText, anchorThing.LabelShortCap, where).Resolve(),
@@ -832,7 +907,7 @@ namespace ModRemovalAuditor.Audit
                     "MRA_Loc_MapUnspawned".Translate(MapLabel(anchorMap)).Resolve(),
                     handle);
             }
-            Gravship gravship = GravshipRoots.Find(thing);
+            Gravship gravship = shared?.GravshipOf(thing);
             if (gravship != null)
             {
                 return new AuditLocation(
@@ -840,7 +915,15 @@ namespace ModRemovalAuditor.Audit
                     "MRA_Loc_Gravship".Translate(gravship.LabelCap).Resolve(),
                     handle);
             }
-            if (thing is Pawn pawn && pawn.Dead)
+            bool dead = thing is Pawn pawn && pawn.Dead;
+            if (asOwner)
+            {
+                return new AuditLocation(
+                    dead ? "worldpawns:dead" : "worldpawns",
+                    (dead ? "MRA_Loc_KeptByWorldDead" : "MRA_Loc_KeptByWorld").Translate().Resolve(),
+                    handle);
+            }
+            if (dead)
             {
                 return new AuditLocation("worldpawns:dead", "MRA_Loc_WorldPawnDead".Translate(thing.LabelShortCap).Resolve(), handle);
             }
@@ -868,7 +951,7 @@ namespace ModRemovalAuditor.Audit
                 : "MRA_MapNamed".Translate(parent, map.uniqueID).Resolve();
         }
 
-        private static string RootText(Thing anchor)
+        private static string RootText(Thing anchor, ScanShared shared)
         {
             if (anchor.Spawned)
             {
@@ -894,7 +977,7 @@ namespace ModRemovalAuditor.Audit
                     return MapLabel(m);
                 }
             }
-            Gravship g = GravshipRoots.Find(anchor);
+            Gravship g = shared?.GravshipOf(anchor);
             if (g != null)
             {
                 return "MRA_Loc_Gravship".Translate(g.LabelCap).Resolve();

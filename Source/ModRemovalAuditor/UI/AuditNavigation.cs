@@ -108,6 +108,29 @@ namespace ModRemovalAuditor.UI
         }
     }
 
+    public sealed class WorldObjectJumpHandle : IAuditJumpHandle
+    {
+        private readonly System.WeakReference<WorldObject> worldObject;
+
+        public WorldObjectJumpHandle(WorldObject worldObject)
+        {
+            this.worldObject = new System.WeakReference<WorldObject>(worldObject);
+        }
+
+        public bool TryResolve(out GlobalTargetInfo target, out string unavailableKey)
+        {
+            if (worldObject.TryGetTarget(out WorldObject wo) && wo != null && wo.Spawned)
+            {
+                target = new GlobalTargetInfo(wo);
+                unavailableKey = null;
+                return true;
+            }
+            target = GlobalTargetInfo.Invalid;
+            unavailableKey = "MRA_Jump_Gone";
+            return false;
+        }
+    }
+
     public static class AuditNavigation
     {
         /// <summary>Finds the next still-valid handle of the finding, starting at <paramref name="cursor"/>.</summary>
@@ -143,7 +166,7 @@ namespace ModRemovalAuditor.UI
             {
                 return false;
             }
-            if (target.HasThing)
+            if (target.HasThing || target.HasWorldObject)
             {
                 CameraJumper.TryJumpAndSelect(target);
             }
