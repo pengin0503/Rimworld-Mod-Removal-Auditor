@@ -38,6 +38,10 @@ namespace ModRemovalAuditor.UI
         private bool reportFromCache;
         private string statusMessage;
         private float rowsBuiltForWidth = -1f;
+        private long rowsBuiltAtTicks;
+
+        /// <summary>While the window is being resized, rows are re-laid out at most this often.</summary>
+        private static readonly long ResizeRebuildIntervalTicks = System.Diagnostics.Stopwatch.Frequency / 4;
 
         public Dialog_ModRemovalAuditor()
         {
@@ -338,7 +342,9 @@ namespace ModRemovalAuditor.UI
         private void DrawReport(Rect rect)
         {
             float width = rect.width - 16f;
-            if (Math.Abs(rowsBuiltForWidth - width) > 0.5f)
+            if (rowsBuiltForWidth < 0f
+                || (Math.Abs(rowsBuiltForWidth - width) > 0.5f
+                    && System.Diagnostics.Stopwatch.GetTimestamp() - rowsBuiltAtTicks >= ResizeRebuildIntervalTicks))
             {
                 BuildRows(width);
             }
@@ -454,6 +460,7 @@ namespace ModRemovalAuditor.UI
         {
             rows.Clear();
             rowsBuiltForWidth = width;
+            rowsBuiltAtTicks = System.Diagnostics.Stopwatch.GetTimestamp();
             float y = 0f;
 
             if (reportFromCache)
@@ -558,6 +565,11 @@ namespace ModRemovalAuditor.UI
                     ? "MRA_CountInstancesItems".Translate(f.Instances.ToString("N0"), f.Items.ToString("N0")).Resolve()
                     : "MRA_CountInstances".Translate(f.Instances.ToString("N0")).Resolve();
             string location = f.GroupKey == AuditAccumulator.OverflowGroupKey ? "MRA_Loc_Overflow".Translate().Resolve() : f.LocationText;
+            // The location text describes the first instance; say so when the row stands for several.
+            if (f.Category != AuditCategory.Terrain && f.GroupKey != AuditAccumulator.OverflowGroupKey && f.Instances > 1)
+            {
+                location += " " + "MRA_Loc_AndMore".Translate((f.Instances - 1).ToString("N0")).Resolve();
+            }
             string confidence = ("MRA_Confidence_" + f.Confidence).Translate().Resolve();
             string text = f.DefLabel + "  [" + f.DefId.DefName + "]  " + counts + "\n" + location + "   · " + confidence;
 

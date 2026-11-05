@@ -1,7 +1,7 @@
 # Mod Removal Auditor — Design Specification
 
 **Date:** 2026-11-04  
-**Status:** Implemented as v1.0 (compiled against 1.7.4985; in-game verification pending — see README)  
+**Status:** Implemented as v1.1, covering the v1.0 scopes plus the Phase 2 pawn data and record scopes (compiled against 1.7.4985; in-game verification pending, see README)  
 **Game:** RimWorld 1.7 / Waylith / .NET 10  
 **Working title:** Mod Removal Auditor (MRA)  
 **Proposed packageId:** `pengin0503.modremovalauditor` (must confirm before release)
