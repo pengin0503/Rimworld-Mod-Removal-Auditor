@@ -14,7 +14,7 @@ A **read-only, on-demand** RimWorld 1.7 mod: pick one or more enabled mods and s
 3. Read the result:
    - **Summary** per mod: `Detected`, `No detected instances` (within the checked scopes) or `Incomplete` (a scope was partial/failed, or content of unknown origin exists). Notes list def types the mod defines that are not scanned, whether it loads its own C# code, and which mods depend on it.
    - **Coverage**: every scope with `checked` / `partially checked` / `FAILED` / `not covered`.
-   - **Findings** grouped by mod and category (items, buildings, terrain, contained/equipped, world/caravan, used as material, other) with instance count, stack-based item count, map/holder/cell and source confidence.
+   - **Findings** grouped by mod and category (items, buildings, terrain, contained/equipped, world/caravan, used as material, pawn data, bills, world objects, factions, ideoligions, quests, research, other) with instance count, stack-based item count, map/holder/cell and source confidence. A location row that stands for several instances shows the first one and "(+N more)".
 4. **Jump** closes the window and selects the thing (or its holder / caravan). Reopening the window shows the last result again (marked as possibly stale). Jump is disabled for things that no longer exist, for changed terrain, and for off-map holders such as world pawns. **Re-scan** replaces the result.
 
 ## What is scanned (v1.1)
@@ -64,6 +64,8 @@ RIMWORLD_17_DIR=/path/to/RimWorld dotnet build Source/ModRemovalAuditor/ModRemov
 python3 tools/check_translations.py
 ```
 
+Releases are published by the `release` workflow (manual dispatch with the version). It runs the tests and the translation check, then `tools/package.py`. That script checks that the version matches About.xml, the csproj and the committed DLL, that release notes exist in `docs/releases/`, and that the package contains no assembly other than `ModRemovalAuditor.dll`.
+
 `RIMWORLD_17_DIR` is the folder containing `Assembly-CSharp.dll` and `UnityStubs.dll`. The build writes `1.7/Assemblies/ModRemovalAuditor.dll`.
 
 ## Verification status
@@ -83,7 +85,9 @@ Languages/{English,Japanese}/
 Textures/UI/ModRemovalAuditor/
 Source/ModRemovalAuditor/              # Audit/ (core + game adapters), UI/
 Tests/ModRemovalAuditor.Tests/         # pure unit tests, no game assemblies needed
-tools/check_translations.py
+tools/check_translations.py            # EN/JA key parity and code-referenced keys
+tools/package.py                       # release packaging with version/content checks
+docs/releases/                         # release notes
 docs/superpowers/                      # design specification and implementation plan
 ```
 
@@ -105,7 +109,7 @@ RimWorld 1.7用の**読み取り専用・必要時のみ実行**のMODです。�
 3. 結果の見方：
    - **概要**：MODごとに「検出あり」「調査した範囲では検出なし」「不完全」（一部の範囲が部分的・失敗、または出自不明の内容がある）を表示します。調査しない種類のDef、独自C#コードの有無、依存しているMODも注記します。
    - **調査範囲**：範囲ごとに「調査済み」「一部のみ調査」「失敗」「対象外」を表示します。
-   - **検出結果**：MOD→分類（アイテム、建築物、床・地形、収納・装備中、ワールド・キャラバン、素材として使用、その他）ごとに、個数・スタック数・マップ／所持者／座標・出自の確度を表示します。
+   - **検出結果**：MOD→分類（アイテム、建築物、床・地形、収納・装備中、ワールド・キャラバン、素材として使用、ポーンのデータ、作業指示、ワールド上の物、勢力、イデオロギー、クエスト、研究、その他）ごとに、個数・スタック数・マップ／所持者／座標・出自の確度を表示します。複数の個体をまとめた行は、最初の1件の場所と「（ほか N件）」を表示します。
 4. 「移動」でウィンドウを閉じ、その物（または所持者・キャラバン）を選択します。ウィンドウを開き直すと前回の結果を（古い可能性がある旨と共に）再表示します。既に存在しない物、床が変わった場所、ワールドポーンなどマップ外のものは移動できません。「再調査」で結果を更新します。
 
 ### 調査範囲（v1.1）
