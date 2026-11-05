@@ -35,7 +35,7 @@
   <MRA_Verdict_NoDetectedInstances>No detected instances within the checked scopes (not a guarantee of safe removal).</MRA_Verdict_NoDetectedInstances>
   <MRA_Verdict_Incomplete>Incomplete: nothing was found, but some scopes were partial or failed, or content of unknown origin exists.</MRA_Verdict_Incomplete>
   <MRA_VerdictTip_Detected>At least one thing, material or terrain from this mod is still present in a scanned scope.</MRA_VerdictTip_Detected>
-  <MRA_VerdictTip_NoDetectedInstances>Every attempted scope finished and nothing from this mod was found. Data outside the listed scopes (pawn data, quests, research, mod-specific saved data…) was not inspected.</MRA_VerdictTip_NoDetectedInstances>
+  <MRA_VerdictTip_NoDetectedInstances>Every attempted scope finished and nothing from this mod was found. Data outside the listed scopes (thoughts, relations, filters and policies, quest internals, mod-specific saved data…) was not inspected.</MRA_VerdictTip_NoDetectedInstances>
   <MRA_VerdictTip_Incomplete>Absence of findings cannot be relied on: see the Coverage section and the unknown-origin note.</MRA_VerdictTip_Incomplete>
   <MRA_NoteUnscannedDefs>Also defines {0} def(s) of types this version does not scan: {1}</MRA_NoteUnscannedDefs>
   <MRA_NoteAssemblies>Loads its own C# assemblies; custom data it saves is not inspected.</MRA_NoteAssemblies>
@@ -50,18 +50,36 @@
   <MRA_Scope_world>World objects: caravans, settlement stock, transport pods, gravships</MRA_Scope_world>
   <MRA_Scope_worldpawns>World pawns and their gear</MRA_Scope_worldpawns>
   <MRA_Scope_terrain>Terrain on all loaded maps (all layers)</MRA_Scope_terrain>
-  <MRA_Scope_pawndata>Pawn data (hediffs, genes, traits, abilities, xenotypes)</MRA_Scope_pawndata>
-  <MRA_Scope_records>Bills, research, quests, factions, ideoligions, tales and art</MRA_Scope_records>
+  <MRA_Scope_pawndata>Pawn data: hediffs, genes, xenotype, traits, abilities, pawn kind, backstories</MRA_Scope_pawndata>
+  <MRA_Scope_bills>Bills (recipes), including surgery bills</MRA_Scope_bills>
+  <MRA_Scope_worldobjects>World object types and site parts</MRA_Scope_worldobjects>
+  <MRA_Scope_factions>Factions</MRA_Scope_factions>
+  <MRA_Scope_ideology>Ideoligions: memes, precepts, culture</MRA_Scope_ideology>
+  <MRA_Scope_quests>Quests (root script)</MRA_Scope_quests>
+  <MRA_Scope_research>Research: progress, techprints, knowledge, current project</MRA_Scope_research>
+  <MRA_Scope_pawnrecords>Thoughts, memories, relations, records, titles, work and policy assignments</MRA_Scope_pawnrecords>
+  <MRA_Scope_filters>Storage, bill-ingredient and outfit/food/drug policy filters</MRA_Scope_filters>
+  <MRA_Scope_questparts>Quest internals (parts, signals, reserved pawns and things)</MRA_Scope_questparts>
+  <MRA_Scope_tales>Tales and art subjects</MRA_Scope_tales>
   <MRA_Scope_customdata>Mod-specific saved data and runtime-generated content</MRA_Scope_customdata>
   <MRA_Scope_gravshipterrain>Terrain carried by a gravship in flight</MRA_Scope_gravshipterrain>
   <MRA_Scope_unloaded>Maps and saves that are not currently loaded</MRA_Scope_unloaded>
-  <MRA_ScopeTip_provenance>Which mod declares each thing and terrain def, built from the loaded mods' def lists.</MRA_ScopeTip_provenance>
+  <MRA_ScopeTip_provenance>Which mod declares each def of a scanned type, built from the loaded mods' def lists.</MRA_ScopeTip_provenance>
   <MRA_ScopeTip_maps>Every loaded map, including maps you are not viewing and pocket maps: items, buildings, plants, pawns, blueprints/frames, and everything inside containers, inventories, apparel, equipment and corpses.</MRA_ScopeTip_maps>
   <MRA_ScopeTip_world>Caravans and their cargo, settlement trade stock, travelling transport pods, sites and gravships in flight.</MRA_ScopeTip_world>
   <MRA_ScopeTip_worldpawns>Pawns stored by the world (faction leaders, quest pawns, former colonists, dead pawns kept for relations) with their inventory, apparel and equipment.</MRA_ScopeTip_worldpawns>
   <MRA_ScopeTip_terrain>Top, under, foundation and temporary terrain layers of every loaded map, counted per cell.</MRA_ScopeTip_terrain>
-  <MRA_ScopeTip_pawndata>Not inspected in this version. Planned for a later version.</MRA_ScopeTip_pawndata>
-  <MRA_ScopeTip_records>Not inspected in this version. Planned for a later version.</MRA_ScopeTip_records>
+  <MRA_ScopeTip_pawndata>For every pawn found in the scopes above (colonists, animals, prisoners, caravan members, world pawns, pawns in corpses or containers).</MRA_ScopeTip_pawndata>
+  <MRA_ScopeTip_bills>Bills of every work table and pawn found in the scopes above. Ingredient filters of bills are not inspected.</MRA_ScopeTip_bills>
+  <MRA_ScopeTip_worldobjects>The definition of every world object (settlements, sites, caravans, …) and the parts of every site.</MRA_ScopeTip_worldobjects>
+  <MRA_ScopeTip_factions>The definition of every faction in this world.</MRA_ScopeTip_factions>
+  <MRA_ScopeTip_ideology>Memes, precepts and culture of every ideoligion. Rituals, buildings and styles chosen inside precepts are not inspected.</MRA_ScopeTip_ideology>
+  <MRA_ScopeTip_quests>The script that created each quest, including ended quests kept in the history. Quest internals are not inspected.</MRA_ScopeTip_quests>
+  <MRA_ScopeTip_research>Research projects with saved progress, applied techprints or anomaly knowledge, and the current project. Projects whose saved progress is zero are not listed.</MRA_ScopeTip_research>
+  <MRA_ScopeTip_pawnrecords>Not inspected in this version.</MRA_ScopeTip_pawnrecords>
+  <MRA_ScopeTip_filters>Not inspected. Filters that allow a removed item usually only cause a load warning.</MRA_ScopeTip_filters>
+  <MRA_ScopeTip_questparts>Not inspected in this version.</MRA_ScopeTip_questparts>
+  <MRA_ScopeTip_tales>Not inspected in this version.</MRA_ScopeTip_tales>
   <MRA_ScopeTip_customdata>Mods can save arbitrary data of their own; it cannot be inspected generically.</MRA_ScopeTip_customdata>
   <MRA_ScopeTip_gravshipterrain>Things and pawns aboard a gravship in flight are scanned, its stored floor tiles are not.</MRA_ScopeTip_gravshipterrain>
   <MRA_ScopeTip_unloaded>Only the save that is currently loaded is inspected.</MRA_ScopeTip_unloaded>
@@ -74,6 +92,8 @@
   <MRA_Warn_HoldersFailed>{0} container(s) could not be read ({1}); see the log.</MRA_Warn_HoldersFailed>
   <MRA_Warn_DepthLimit>{0} deeply nested container(s) skipped.</MRA_Warn_DepthLimit>
   <MRA_Warn_MapsRemoved>{0} map(s) were removed during the scan and skipped.</MRA_Warn_MapsRemoved>
+  <MRA_Warn_EntriesFailed>{0} entr(ies) could not be read ({1}); see the log.</MRA_Warn_EntriesFailed>
+  <MRA_Warn_ResearchProgressUnreadable>Saved research progress could not be read on this game version; techprints, knowledge and the current project were still checked.</MRA_Warn_ResearchProgressUnreadable>
   <MRA_FindingsTruncated>Very many distinct locations: further locations were merged into "other locations" rows. Counts are complete.</MRA_FindingsTruncated>
 
   <!-- Findings -->
@@ -85,6 +105,13 @@
   <MRA_Category_ContainedEquipped>Contained / equipped</MRA_Category_ContainedEquipped>
   <MRA_Category_WorldCaravan>World / caravan</MRA_Category_WorldCaravan>
   <MRA_Category_Material>Used as material (stuff)</MRA_Category_Material>
+  <MRA_Category_PawnData>Pawn data</MRA_Category_PawnData>
+  <MRA_Category_Bills>Bills</MRA_Category_Bills>
+  <MRA_Category_WorldObjects>World objects</MRA_Category_WorldObjects>
+  <MRA_Category_Factions>Factions</MRA_Category_Factions>
+  <MRA_Category_Ideology>Ideoligions</MRA_Category_Ideology>
+  <MRA_Category_Quests>Quests</MRA_Category_Quests>
+  <MRA_Category_Research>Research</MRA_Category_Research>
   <MRA_Category_Other>Other (pawns, plants, filth, blueprints…)</MRA_Category_Other>
   <MRA_CountInstances>×{0}</MRA_CountInstances>
   <MRA_CountInstancesItems>×{0} ({1} items)</MRA_CountInstancesItems>
@@ -110,6 +137,26 @@
   <MRA_Loc_Gravship>Aboard gravship in flight: {0}</MRA_Loc_Gravship>
   <MRA_Loc_WorldPawn>World pawn: {0} (not on any map)</MRA_Loc_WorldPawn>
   <MRA_Loc_WorldPawnDead>Dead world pawn: {0} (not on any map)</MRA_Loc_WorldPawnDead>
+  <MRA_Loc_OnOwner>{0}: {1}</MRA_Loc_OnOwner>
+  <MRA_Loc_KeptByWorld>kept by the world (not on any map)</MRA_Loc_KeptByWorld>
+  <MRA_Loc_KeptByWorldDead>dead, kept by the world (not on any map)</MRA_Loc_KeptByWorldDead>
+  <MRA_Loc_WorldObject>World: {0}</MRA_Loc_WorldObject>
+  <MRA_Loc_Faction>Faction: {0}</MRA_Loc_Faction>
+  <MRA_Loc_Ideo>Ideoligion: {0}</MRA_Loc_Ideo>
+  <MRA_Loc_Quest>Quest: {0} ({1})</MRA_Loc_Quest>
+  <MRA_Loc_Research>Research: {0}</MRA_Loc_Research>
+  <MRA_Loc_AndMore>(+{0} more)</MRA_Loc_AndMore>
+  <MRA_Research_Finished>finished</MRA_Research_Finished>
+  <MRA_Research_Progress>{0} done</MRA_Research_Progress>
+  <MRA_Research_Techprints>{0} techprint(s) applied</MRA_Research_Techprints>
+  <MRA_Research_Current>current project</MRA_Research_Current>
+  <MRA_QuestState_NotYetAccepted>offered</MRA_QuestState_NotYetAccepted>
+  <MRA_QuestState_Ongoing>ongoing</MRA_QuestState_Ongoing>
+  <MRA_QuestState_EndedUnknownOutcome>ended</MRA_QuestState_EndedUnknownOutcome>
+  <MRA_QuestState_EndedOfferExpired>offer expired</MRA_QuestState_EndedOfferExpired>
+  <MRA_QuestState_EndedSuccess>succeeded</MRA_QuestState_EndedSuccess>
+  <MRA_QuestState_EndedFailed>failed</MRA_QuestState_EndedFailed>
+  <MRA_QuestState_EndedInvalid>invalid</MRA_QuestState_EndedInvalid>
   <MRA_Loc_OffMap>off-map</MRA_Loc_OffMap>
   <MRA_Loc_Unknown>Unknown location</MRA_Loc_Unknown>
   <MRA_Loc_Overflow>Other locations (merged)</MRA_Loc_Overflow>

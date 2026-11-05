@@ -35,7 +35,7 @@
   <MRA_Verdict_NoDetectedInstances>調査した範囲では検出されませんでした（安全な削除の保証ではありません）。</MRA_Verdict_NoDetectedInstances>
   <MRA_Verdict_Incomplete>不完全：見つかりませんでしたが、一部の範囲が部分的・失敗したか、出自不明の内容があります。</MRA_Verdict_Incomplete>
   <MRA_VerdictTip_Detected>このMOD由来の物・素材・床材が、調査した範囲に少なくとも1つ残っています。</MRA_VerdictTip_Detected>
-  <MRA_VerdictTip_NoDetectedInstances>試みた範囲はすべて完了し、このMOD由来のものは見つかりませんでした。記載範囲外のデータ（ポーンのデータ、クエスト、研究、MOD独自の保存データなど）は調べていません。</MRA_VerdictTip_NoDetectedInstances>
+  <MRA_VerdictTip_NoDetectedInstances>試みた範囲はすべて完了し、このMOD由来のものは見つかりませんでした。記載範囲外のデータ（思考・記憶、人間関係、フィルターや方針、クエスト内部、MOD独自の保存データなど）は調べていません。</MRA_VerdictTip_NoDetectedInstances>
   <MRA_VerdictTip_Incomplete>検出がないことを根拠にできません。「調査範囲」と出自不明の注記を確認してください。</MRA_VerdictTip_Incomplete>
   <MRA_NoteUnscannedDefs>この版では調査しない種類のDefも {0}個 定義しています：{1}</MRA_NoteUnscannedDefs>
   <MRA_NoteAssemblies>独自のC#アセンブリを読み込んでいます。このMODが独自に保存するデータは調べていません。</MRA_NoteAssemblies>
@@ -50,18 +50,36 @@
   <MRA_Scope_world>ワールド上の物：キャラバン、拠点の在庫、輸送ポッド、グラビシップ</MRA_Scope_world>
   <MRA_Scope_worldpawns>ワールドポーンと所持品</MRA_Scope_worldpawns>
   <MRA_Scope_terrain>読み込み済みの全マップの床・地形（全レイヤー）</MRA_Scope_terrain>
-  <MRA_Scope_pawndata>ポーンのデータ（健康状態、遺伝子、特性、能力、ゼノタイプ）</MRA_Scope_pawndata>
-  <MRA_Scope_records>作業指示、研究、クエスト、勢力、イデオロギー、物語・美術品の題材</MRA_Scope_records>
+  <MRA_Scope_pawndata>ポーンのデータ：健康状態、遺伝子、ゼノタイプ、特性、能力、ポーンの種類、経歴</MRA_Scope_pawndata>
+  <MRA_Scope_bills>作業指示（レシピ）、手術の予定を含む</MRA_Scope_bills>
+  <MRA_Scope_worldobjects>ワールド上の物の種類とサイトの構成要素</MRA_Scope_worldobjects>
+  <MRA_Scope_factions>勢力</MRA_Scope_factions>
+  <MRA_Scope_ideology>イデオロギー：ミーム、戒律、文化</MRA_Scope_ideology>
+  <MRA_Scope_quests>クエスト（元になるスクリプト）</MRA_Scope_quests>
+  <MRA_Scope_research>研究：進捗、技術設計図、知識、現在の研究</MRA_Scope_research>
+  <MRA_Scope_pawnrecords>思考・記憶、人間関係、記録、称号、仕事・方針の割り当て</MRA_Scope_pawnrecords>
+  <MRA_Scope_filters>保管場所・作業指示の材料・服装／食事／薬物の方針のフィルター</MRA_Scope_filters>
+  <MRA_Scope_questparts>クエスト内部（パーツ、シグナル、予約されたポーンや物）</MRA_Scope_questparts>
+  <MRA_Scope_tales>物語と美術品の題材</MRA_Scope_tales>
   <MRA_Scope_customdata>MOD独自の保存データと実行時に生成された内容</MRA_Scope_customdata>
   <MRA_Scope_gravshipterrain>飛行中のグラビシップが運んでいる床</MRA_Scope_gravshipterrain>
   <MRA_Scope_unloaded>現在読み込まれていないマップやセーブ</MRA_Scope_unloaded>
-  <MRA_ScopeTip_provenance>読み込まれた各MODのDef一覧から、どのMODがどの物・床のDefを定義しているかを作成します。</MRA_ScopeTip_provenance>
+  <MRA_ScopeTip_provenance>読み込まれた各MODのDef一覧から、調査対象の種類の各DefをどのMODが定義しているかを作成します。</MRA_ScopeTip_provenance>
   <MRA_ScopeTip_maps>表示していないマップやポケットマップを含む全マップの、アイテム・建築物・植物・ポーン・設計図／建設中のもの、そして容器・インベントリ・衣服・装備・死体の中身すべて。</MRA_ScopeTip_maps>
   <MRA_ScopeTip_world>キャラバンと積み荷、拠点の交易在庫、移動中の輸送ポッド、サイト、飛行中のグラビシップ。</MRA_ScopeTip_world>
   <MRA_ScopeTip_worldpawns>ワールドに保存されているポーン（勢力の指導者、クエストのポーン、元入植者、関係のため保持される死亡ポーン）と、そのインベントリ・衣服・装備。</MRA_ScopeTip_worldpawns>
   <MRA_ScopeTip_terrain>全マップの上層・下層・基礎・一時の床レイヤーをマスごとに数えます。</MRA_ScopeTip_terrain>
-  <MRA_ScopeTip_pawndata>この版では調べません。今後の版で対応予定です。</MRA_ScopeTip_pawndata>
-  <MRA_ScopeTip_records>この版では調べません。今後の版で対応予定です。</MRA_ScopeTip_records>
+  <MRA_ScopeTip_pawndata>上記の範囲で見つかったすべてのポーン（入植者、動物、囚人、キャラバンの一員、ワールドポーン、死体や容器の中のポーン）が対象です。</MRA_ScopeTip_pawndata>
+  <MRA_ScopeTip_bills>上記の範囲で見つかったすべての作業台とポーンの作業指示。作業指示の材料フィルターは調べません。</MRA_ScopeTip_bills>
+  <MRA_ScopeTip_worldobjects>ワールド上のすべての物（拠点、サイト、キャラバンなど）の定義と、各サイトの構成要素。</MRA_ScopeTip_worldobjects>
+  <MRA_ScopeTip_factions>このワールドのすべての勢力の定義。</MRA_ScopeTip_factions>
+  <MRA_ScopeTip_ideology>すべてのイデオロギーのミーム・戒律・文化。戒律の中で選ばれた儀式・建築物・様式は調べません。</MRA_ScopeTip_ideology>
+  <MRA_ScopeTip_quests>各クエストを作成したスクリプト（履歴に残る終了済みクエストを含む）。クエスト内部は調べません。</MRA_ScopeTip_quests>
+  <MRA_ScopeTip_research>進捗・使用済み技術設計図・アノマリーの知識が保存されている研究と、現在の研究。保存されている進捗が0の研究は表示しません。</MRA_ScopeTip_research>
+  <MRA_ScopeTip_pawnrecords>この版では調べません。</MRA_ScopeTip_pawnrecords>
+  <MRA_ScopeTip_filters>調べません。削除したアイテムを許可しているフィルターは、通常ロード時の警告だけで済みます。</MRA_ScopeTip_filters>
+  <MRA_ScopeTip_questparts>この版では調べません。</MRA_ScopeTip_questparts>
+  <MRA_ScopeTip_tales>この版では調べません。</MRA_ScopeTip_tales>
   <MRA_ScopeTip_customdata>MODは独自のデータを自由に保存できるため、汎用的には調べられません。</MRA_ScopeTip_customdata>
   <MRA_ScopeTip_gravshipterrain>飛行中のグラビシップの物とポーンは調べますが、保存されている床タイルは調べません。</MRA_ScopeTip_gravshipterrain>
   <MRA_ScopeTip_unloaded>現在読み込んでいるセーブだけを調べます。</MRA_ScopeTip_unloaded>
@@ -74,6 +92,8 @@
   <MRA_Warn_HoldersFailed>{0}個の容器を読み取れませんでした（{1}）。ログを確認してください。</MRA_Warn_HoldersFailed>
   <MRA_Warn_DepthLimit>深く入れ子になった容器 {0}個を飛ばしました。</MRA_Warn_DepthLimit>
   <MRA_Warn_MapsRemoved>調査中に {0}個のマップが消えたため飛ばしました。</MRA_Warn_MapsRemoved>
+  <MRA_Warn_EntriesFailed>{0}件の項目を読み取れませんでした（{1}）。ログを確認してください。</MRA_Warn_EntriesFailed>
+  <MRA_Warn_ResearchProgressUnreadable>このゲームバージョンでは保存された研究の進捗を読み取れませんでした。技術設計図・知識・現在の研究は調べました。</MRA_Warn_ResearchProgressUnreadable>
   <MRA_FindingsTruncated>場所の種類が非常に多いため、それ以降の場所は「その他の場所」の行にまとめました。個数はすべて数えています。</MRA_FindingsTruncated>
 
   <!-- 検出結果 -->
@@ -85,6 +105,13 @@
   <MRA_Category_ContainedEquipped>収納・装備中</MRA_Category_ContainedEquipped>
   <MRA_Category_WorldCaravan>ワールド・キャラバン</MRA_Category_WorldCaravan>
   <MRA_Category_Material>素材として使用</MRA_Category_Material>
+  <MRA_Category_PawnData>ポーンのデータ</MRA_Category_PawnData>
+  <MRA_Category_Bills>作業指示</MRA_Category_Bills>
+  <MRA_Category_WorldObjects>ワールド上の物</MRA_Category_WorldObjects>
+  <MRA_Category_Factions>勢力</MRA_Category_Factions>
+  <MRA_Category_Ideology>イデオロギー</MRA_Category_Ideology>
+  <MRA_Category_Quests>クエスト</MRA_Category_Quests>
+  <MRA_Category_Research>研究</MRA_Category_Research>
   <MRA_Category_Other>その他（ポーン、植物、汚れ、設計図など）</MRA_Category_Other>
   <MRA_CountInstances>×{0}</MRA_CountInstances>
   <MRA_CountInstancesItems>×{0}（アイテム数 {1}）</MRA_CountInstancesItems>
@@ -110,6 +137,26 @@
   <MRA_Loc_Gravship>飛行中のグラビシップに搭載：{0}</MRA_Loc_Gravship>
   <MRA_Loc_WorldPawn>ワールドポーン：{0}（どのマップにもいません）</MRA_Loc_WorldPawn>
   <MRA_Loc_WorldPawnDead>死亡したワールドポーン：{0}（どのマップにもいません）</MRA_Loc_WorldPawnDead>
+  <MRA_Loc_OnOwner>{0}：{1}</MRA_Loc_OnOwner>
+  <MRA_Loc_KeptByWorld>ワールドが保持（どのマップにもいません）</MRA_Loc_KeptByWorld>
+  <MRA_Loc_KeptByWorldDead>死亡・ワールドが保持（どのマップにもいません）</MRA_Loc_KeptByWorldDead>
+  <MRA_Loc_WorldObject>ワールド：{0}</MRA_Loc_WorldObject>
+  <MRA_Loc_Faction>勢力：{0}</MRA_Loc_Faction>
+  <MRA_Loc_Ideo>イデオロギー：{0}</MRA_Loc_Ideo>
+  <MRA_Loc_Quest>クエスト：{0}（{1}）</MRA_Loc_Quest>
+  <MRA_Loc_Research>研究：{0}</MRA_Loc_Research>
+  <MRA_Loc_AndMore>（ほか{0}件）</MRA_Loc_AndMore>
+  <MRA_Research_Finished>完了</MRA_Research_Finished>
+  <MRA_Research_Progress>{0}完了</MRA_Research_Progress>
+  <MRA_Research_Techprints>技術設計図{0}枚を使用済み</MRA_Research_Techprints>
+  <MRA_Research_Current>現在の研究</MRA_Research_Current>
+  <MRA_QuestState_NotYetAccepted>未受諾</MRA_QuestState_NotYetAccepted>
+  <MRA_QuestState_Ongoing>進行中</MRA_QuestState_Ongoing>
+  <MRA_QuestState_EndedUnknownOutcome>終了</MRA_QuestState_EndedUnknownOutcome>
+  <MRA_QuestState_EndedOfferExpired>期限切れ</MRA_QuestState_EndedOfferExpired>
+  <MRA_QuestState_EndedSuccess>成功</MRA_QuestState_EndedSuccess>
+  <MRA_QuestState_EndedFailed>失敗</MRA_QuestState_EndedFailed>
+  <MRA_QuestState_EndedInvalid>無効</MRA_QuestState_EndedInvalid>
   <MRA_Loc_OffMap>マップ外</MRA_Loc_OffMap>
   <MRA_Loc_Unknown>場所不明</MRA_Loc_Unknown>
   <MRA_Loc_Overflow>その他の場所（まとめて表示）</MRA_Loc_Overflow>

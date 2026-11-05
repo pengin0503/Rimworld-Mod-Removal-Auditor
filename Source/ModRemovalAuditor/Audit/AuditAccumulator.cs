@@ -154,7 +154,7 @@ namespace ModRemovalAuditor.Audit
                 // Aggregates (terrain runs) are unique by construction.
                 return true;
             }
-            if (seen.Add(new InstanceKey(observation.Instance, observation.Category == AuditCategory.Material)))
+            if (seen.Add(new InstanceKey(observation.Instance, observation.Def)))
             {
                 return true;
             }
@@ -209,23 +209,28 @@ namespace ModRemovalAuditor.Audit
             return c != 0 ? c : string.CompareOrdinal(a.GroupKey, b.GroupKey);
         }
 
+        /// <summary>
+        /// De-duplication key: (object, def) by reference. The same thing reached through two paths
+        /// counts once, while one object referencing several defs (a thing and its stuff, a pawn and
+        /// its kind / xenotype / backstories) counts once per def.
+        /// </summary>
         private readonly struct InstanceKey : IEquatable<InstanceKey>
         {
             private readonly object instance;
 
-            private readonly bool materialRole;
+            private readonly object def;
 
-            public InstanceKey(object instance, bool materialRole)
+            public InstanceKey(object instance, object def)
             {
                 this.instance = instance;
-                this.materialRole = materialRole;
+                this.def = def;
             }
 
-            public bool Equals(InstanceKey other) => ReferenceEquals(instance, other.instance) && materialRole == other.materialRole;
+            public bool Equals(InstanceKey other) => ReferenceEquals(instance, other.instance) && ReferenceEquals(def, other.def);
 
             public override bool Equals(object obj) => obj is InstanceKey other && Equals(other);
 
-            public override int GetHashCode() => RuntimeHelpers.GetHashCode(instance) * 2 + (materialRole ? 1 : 0);
+            public override int GetHashCode() => HashCode.Combine(RuntimeHelpers.GetHashCode(instance), def == null ? 0 : RuntimeHelpers.GetHashCode(def));
         }
 
         private readonly struct FindingKey : IEquatable<FindingKey>

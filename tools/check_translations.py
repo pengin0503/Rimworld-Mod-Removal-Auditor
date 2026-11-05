@@ -18,7 +18,8 @@ LANGS = ["English", "Japanese"]
 
 # Dynamic keys: prefix -> values appended at runtime (must mirror the C# enums / scope ids).
 DYNAMIC = {
-    "MRA_Category_": ["Items", "Buildings", "Terrain", "ContainedEquipped", "WorldCaravan", "Material", "Other"],
+    "MRA_Category_": None,   # filled from the AuditCategory enum below
+    "MRA_QuestState_": ["NotYetAccepted", "Ongoing", "EndedUnknownOutcome", "EndedOfferExpired", "EndedSuccess", "EndedFailed", "EndedInvalid"],
     "MRA_Confidence_": ["Confirmed", "Uncertain", "Unknown"],
     "MRA_Reason_": ["Declared", "Shadowed", "NotInOwnerDefs", "NoOwner"],
     "MRA_Status_": ["Pending", "Checked", "Partial", "Failed", "Cancelled", "NotCovered"],
@@ -75,6 +76,10 @@ def main():
 
     source = "\n".join(p.read_text(encoding="utf-8") for p in (ROOT / "Source").rglob("*.cs"))
     scopes = scope_ids(source)
+    enum_block = re.search(r"public enum AuditCategory\s*\{(.*?)\}", source, re.S)
+    DYNAMIC["MRA_Category_"] = re.findall(r"(\w+),", enum_block.group(1)) if enum_block else []
+    if not DYNAMIC["MRA_Category_"]:
+        problems.append("could not read the AuditCategory enum")
     DYNAMIC["MRA_Scope_"] = scopes
     DYNAMIC["MRA_ScopeTip_"] = scopes
     referenced = set(re.findall(r'"(MRA_[A-Za-z_]+)"', source))
@@ -96,7 +101,8 @@ def main():
     if problems:
         print("\n".join(problems))
         return 1
-    print(f"translations ok: {len(en)} keys in {', '.join(LANGS)}; {len(referenced)} referenced from code; scopes={scopes}")
+    print(f"translations ok: {len(en)} keys in {', '.join(LANGS)}; {len(referenced)} referenced from code; "
+          f"scopes={scopes}; categories={DYNAMIC['MRA_Category_']}")
     return 0
 
 
