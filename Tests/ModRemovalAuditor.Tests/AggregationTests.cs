@@ -230,4 +230,34 @@ public class AggregationTests
         Assert.Equal(ModA, r.Findings[0].Target);
         Assert.Equal(ModB, r.Findings[2].Target);
     }
+
+    [Fact]
+    public void OneObjectCarryingSeveralDefsCountsEachDefOnce()
+    {
+        // A pawn references its kind, xenotype and backstories; each attributed def counts,
+        // but re-observing the same (object, def) pair does not.
+        AuditAccumulator acc = new AuditAccumulator(new[] { ModA });
+        FakeDescriber d = new FakeDescriber();
+        FakeDef kind = new FakeDef("PawnKindDef", "A_Kind", "raider");
+        FakeDef xenotype = new FakeDef("XenotypeDef", "A_Xeno", "xeno");
+        object pawn = new object();
+
+        acc.Add(new AuditObservation(pawn, kind, kind.Id, AuditCategory.PawnData, 1, 0, null), Obs.Owned(ModA), d);
+        acc.Add(new AuditObservation(pawn, xenotype, xenotype.Id, AuditCategory.PawnData, 1, 0, null), Obs.Owned(ModA), d);
+        acc.Add(new AuditObservation(pawn, kind, kind.Id, AuditCategory.PawnData, 1, 0, null), Obs.Owned(ModA), d);
+
+        AuditReport r = Build(acc, ModA);
+        Assert.Equal(2, r.Findings.Count);
+        Assert.All(r.Findings, f => Assert.Equal(1, f.Instances));
+        Assert.Equal(1, acc.DuplicateObservations);
+    }
+
+    [Fact]
+    public void RecordCategoriesSortAfterThingCategories()
+    {
+        Assert.True(AuditCategory.Material < AuditCategory.PawnData);
+        Assert.True(AuditCategory.PawnData < AuditCategory.Bills);
+        Assert.True(AuditCategory.Research < AuditCategory.Other);
+    }
 }
+

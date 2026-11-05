@@ -172,3 +172,27 @@ Executed inline, task by task. Deviations from this plan, verified against the 1
 - **Entry points:** minimized bottom-bar `MainButtonDef` and a button on the mod settings page. Jump closes the window; the last report is kept only in memory (weak references, discarded when another game is loaded).
 - **Signatures:** `AuditSession(targets, sources, resolve, ...)` + `Start()`; `AuditAccumulator.BuildReport(state, targets, coverage, units)`; `AuditNavigation.TryJump(finding, ref cursor)`.
 - **Not performed (no runnable client):** in-game smoke test, fixture-save integration, UI checklist, in-game performance benchmark. A synthetic core benchmark (300k observations) measured ~1.3 µs per unit.
+
+## v1.1 tasks (2026-11-05)
+
+Scope from the follow-up section, verified against 1.7.4985 rev1269. Everything stays read-only; any accessor that writes (for example `ResearchManager.GetProgress`, `ResearchProjectDef.IsFinished/ProgressReal`, `ResearchManager.CurrentAnomalyKnowledgeProjects`) is not called.
+
+- **Task 9 — de-duplication by (object, def):** instead of (object, material flag), so one pawn can carry several attributed defs (kind, xenotype, backstories) while the same reference seen twice still counts once. Test first.
+- **Task 10 — pawn data:** for every pawn reached by the map, world and world-pawn traversals, scan hediffs, xenogenes and endogenes, the xenotype, traits, abilities, the pawn kind and backstories. Scope `pawndata`.
+- **Task 11 — records:**
+  - `bills`: bills of every bill giver reached by the traversals, including surgery bills.
+  - `research`:
+    - the saved progress dictionary, read through one targeted reflection read with no write; the scope becomes Partial if the field is missing;
+    - techprints;
+    - anomaly knowledge;
+    - the current project.
+  - `quests`: quest root script.
+  - `factions`: faction def.
+  - `ideology`: memes, precepts and culture.
+  - `worldobjects`: world object def and site parts.
+- **Task 12 — fix the known v1.0 issues:**
+  - show "(+N more)" when a location row stands for several instances;
+  - throttle the row rebuild while the window is being resized;
+  - remove the unused Waylith reference;
+  - update the not-covered list to thoughts, relations, records, titles, work and policies, storage/bill/policy filters, quest internals, tales and art, custom data, gravship terrain, and unloaded data.
+- **Task 13 — release:** bump to 1.1.0, add a release workflow that packages the committed mod folder and refuses game assemblies, then merge and publish the release.

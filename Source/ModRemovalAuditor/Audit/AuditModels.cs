@@ -11,6 +11,13 @@ namespace ModRemovalAuditor.Audit
         ContainedEquipped,
         WorldCaravan,
         Material,
+        PawnData,
+        Bills,
+        WorldObjects,
+        Factions,
+        Ideology,
+        Quests,
+        Research,
         Other,
     }
 
